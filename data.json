@@ -1,46 +1,99 @@
 {
-  "lastUpdated": "April 29, 2026",
-  "kpi": {
-    "march": {
-      "promoConfigs":     { "value": 1629,  "prior": null,  "unit": "",  "lowerBetter": false },
-      "cycleTime":        { "value": 2.25,  "target": 3,    "unit": "d", "lowerBetter": true  },
-      "configAccuracy":   { "value": 98.3,  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "1,602 / 1,629 first-time-right" },
-      "slaAdherence":     { "value": 92.45, "target": 90,   "unit": "%", "lowerBetter": false, "detail": "4 misses / 53 tasks" },
-      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
-      "generosityErrors": { "value": 6,     "target": 0,    "unit": "",  "lowerBetter": true  }
-    },
-    "april": {
-      "promoConfigs":     { "value": 1523,  "prior": 1629,  "unit": "",  "lowerBetter": false },
-      "cycleTime":        { "value": 2.63,  "target": 3,    "unit": "d", "lowerBetter": true  },
-      "configAccuracy":   { "value": 98.1,  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "1,494 / 1,523 first-time-right" },
-      "slaAdherence":     { "value": 91.78, "target": 90,   "unit": "%", "lowerBetter": false, "detail": "6 misses / 73 tasks" },
-      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
-      "generosityErrors": { "value": 7,     "target": 0,    "unit": "",  "lowerBetter": true  }
-    },
-    "may": {
-      "promoConfigs":     { "value": "TBD",  "prior": 1523,  "unit": "",  "lowerBetter": false },
-      "cycleTime":        { "value": "TBD",  "target": 3,    "unit": "d", "lowerBetter": true  },
-      "configAccuracy":   { "value": "TBD",  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "X / X first-time-right" },
-      "slaAdherence":     { "value": "TBD", "target": 90,   "unit": "%", "lowerBetter": false, "detail": "X misses / X tasks" },
-      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
-      "generosityErrors": { "value": 1,     "target": 0,    "unit": "",  "lowerBetter": true  }
-    }
+  "lastUpdated": "May 5, 2026",
+
+  "kpiMeta": {
+    "promoConfigs":     { "label": "Promo Configs Built",        "sub": "offers & generosity setups", "unit": "",  "lowerBetter": false, "target": null },
+    "cycleTime":        { "label": "Cycle Time",                  "sub": "avg. brief to live config",  "unit": "d", "lowerBetter": true,  "target": 3    },
+    "configAccuracy":   { "label": "Config Accuracy",             "sub": "first-time-right rate",      "unit": "%", "lowerBetter": false, "target": 99   },
+    "slaAdherence":     { "label": "SLA Adherence",               "sub": "on-time config delivery",    "unit": "%", "lowerBetter": false, "target": 90   },
+    "requestsTracked":  { "label": "Requests Tracked in Asana",   "sub": "of all intake requests",     "unit": "%", "lowerBetter": false, "target": 100  },
+    "generosityErrors": { "label": "Generosity Errors",           "sub": "post-deployment",            "unit": "",  "lowerBetter": true,  "target": 0    }
   },
-  "operators": [
-    { "name": "Don",     "march": 2,   "april": 1,   "may":"X"},
-    { "name": "Aunye",   "march": 235, "april": 340,   "may":"X"},
-    { "name": "Billy",   "march": 2,   "april": 1,   "may":"X"},
-    { "name": "Michael", "march": 76,  "april": 50,   "may":"X"},
-    { "name": "Spencer", "march": 0,   "april": 8,   "may":"X"},
-    { "name": "Jordan",  "march": 390, "april": 477,   "may":"X"},
-    { "name": "Jenna",   "march": 63,  "april": 75,   "may":"X"},
-    { "name": "Eddie",   "march": 12,  "april": 10,   "may":"X"},
-    { "name": "Jonah",   "march": 201, "april": 130,   "may":"X"},
-    { "name": "Stephen", "march": 482, "april": 306,   "may":"X"},
-    { "name": "Elena",   "march": 0,   "april": 48,   "may":"X"},
-    { "name": "Camille", "march": 0,   "april": 34,   "may":"X"},
-    { "name": "Nikki",   "march": 166, "april": 43,   "may":"X"}
+
+  "months": [
+    {
+      "id": "march-2026",
+      "label": "March 2026",
+      "kpi": {
+        "promoConfigs":     { "value": 1629,  "detail": null },
+        "cycleTime":        { "value": 2.25,  "detail": null },
+        "configAccuracy":   { "value": 98.3,  "detail": "1,602 / 1,629 first-time-right" },
+        "slaAdherence":     { "value": 92.45, "detail": "4 misses / 53 tasks" },
+        "requestsTracked":  { "value": 100,   "detail": null },
+        "generosityErrors": { "value": 6,     "detail": null }
+      },
+      "operators": [
+        { "name": "Don",     "value": 2   },
+        { "name": "Aunye",   "value": 235 },
+        { "name": "Billy",   "value": 2   },
+        { "name": "Michael", "value": 76  },
+        { "name": "Spencer", "value": 0   },
+        { "name": "Jordan",  "value": 390 },
+        { "name": "Jenna",   "value": 63  },
+        { "name": "Eddie",   "value": 12  },
+        { "name": "Jonah",   "value": 201 },
+        { "name": "Stephen", "value": 482 },
+        { "name": "Elena",   "value": 0   },
+        { "name": "Camille", "value": 0   },
+        { "name": "Nikki",   "value": 166 }
+      ]
+    },
+    {
+      "id": "april-2026",
+      "label": "April 2026",
+      "kpi": {
+        "promoConfigs":     { "value": 1523,  "detail": null },
+        "cycleTime":        { "value": 2.63,  "detail": null },
+        "configAccuracy":   { "value": 98.1,  "detail": "1,494 / 1,523 first-time-right" },
+        "slaAdherence":     { "value": 91.78, "detail": "6 misses / 73 tasks" },
+        "requestsTracked":  { "value": 100,   "detail": null },
+        "generosityErrors": { "value": 7,     "detail": null }
+      },
+      "operators": [
+        { "name": "Don",     "value": 1   },
+        { "name": "Aunye",   "value": 340 },
+        { "name": "Billy",   "value": 1   },
+        { "name": "Michael", "value": 50  },
+        { "name": "Spencer", "value": 8   },
+        { "name": "Jordan",  "value": 477 },
+        { "name": "Jenna",   "value": 75  },
+        { "name": "Eddie",   "value": 10  },
+        { "name": "Jonah",   "value": 130 },
+        { "name": "Stephen", "value": 306 },
+        { "name": "Elena",   "value": 48  },
+        { "name": "Camille", "value": 34  },
+        { "name": "Nikki",   "value": 43  }
+      ]
+    },
+    {
+      "id": "may-2026",
+      "label": "May 2026",
+      "kpi": {
+        "promoConfigs":     { "value": null, "detail": null },
+        "cycleTime":        { "value": null, "detail": null },
+        "configAccuracy":   { "value": null, "detail": null },
+        "slaAdherence":     { "value": null, "detail": null },
+        "requestsTracked":  { "value": null, "detail": null },
+        "generosityErrors": { "value": null, "detail": null }
+      },
+      "operators": [
+        { "name": "Don",     "value": null },
+        { "name": "Aunye",   "value": null },
+        { "name": "Billy",   "value": null },
+        { "name": "Michael", "value": null },
+        { "name": "Spencer", "value": null },
+        { "name": "Jordan",  "value": null },
+        { "name": "Jenna",   "value": null },
+        { "name": "Eddie",   "value": null },
+        { "name": "Jonah",   "value": null },
+        { "name": "Stephen", "value": null },
+        { "name": "Elena",   "value": null },
+        { "name": "Camille", "value": null },
+        { "name": "Nikki",   "value": null }
+      ]
+    }
   ],
+
   "projects": [
     {
       "name": "AI Contextual QA Tool",

@@ -5,163 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promo Operations Dashboard</title>
 <style>
-  /* ── Password gate ── */
-  #gate {
-    position: fixed; inset: 0;
-    background: #1a6b3c;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9999;
-  }
-  .gate-box {
-    background: white;
-    border-radius: 12px;
-    padding: 36px 40px 32px;
-    width: 320px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    text-align: center;
-  }
-  .gate-logo {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a6b3c;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-  }
-  .gate-sub {
-    font-size: 12px;
-    color: #97a0af;
-    margin-bottom: 28px;
-  }
-  .gate-label {
-    display: block;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #5e6c84;
-    margin-bottom: 6px;
-  }
-  .gate-input {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1.5px solid #dfe1e6;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #172b4d;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .gate-input:focus { border-color: #1a6b3c; }
-  .gate-input.error { border-color: #ff5630; }
-  .gate-error {
-    font-size: 11.5px;
-    color: #bf2600;
-    margin-top: 6px;
-    min-height: 16px;
-    text-align: left;
-  }
-  .gate-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 11px;
-    background: #1a6b3c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .gate-btn:hover { background: #155c32; }
-</style>
-<style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f4f5f7;
-    color: #172b4d;
-    min-height: 100vh;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f5f7; color: #172b4d; min-height: 100vh; }
+
+  /* ── Password gate ── */
+  #gate { position: fixed; inset: 0; background: #1a6b3c; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+  .gate-box { background: white; border-radius: 12px; padding: 36px 40px 32px; width: 320px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); text-align: center; }
+  .gate-logo { font-size: 28px; font-weight: 800; color: #1a6b3c; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .gate-sub { font-size: 12px; color: #97a0af; margin-bottom: 28px; }
+  .gate-label { display: block; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #5e6c84; margin-bottom: 6px; }
+  .gate-input { width: 100%; padding: 10px 13px; border: 1.5px solid #dfe1e6; border-radius: 6px; font-size: 14px; color: #172b4d; outline: none; transition: border-color 0.15s; }
+  .gate-input:focus { border-color: #1a6b3c; }
+  .gate-input.error { border-color: #ff5630; }
+  .gate-error { font-size: 11.5px; color: #bf2600; margin-top: 6px; min-height: 16px; text-align: left; }
+  .gate-btn { width: 100%; margin-top: 20px; padding: 11px; background: #1a6b3c; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+  .gate-btn:hover { background: #155c32; }
+
   /* ── Header ── */
-  .header {
-    background: #1a6b3c;
-    color: white;
-    padding: 20px 28px 16px;
-  }
+  .header { background: #1a6b3c; color: white; padding: 20px 28px 16px; }
   .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.01em; }
-  .header p  { font-size: 12px; opacity: 0.75; margin-top: 3px; }
+  .header p { font-size: 12px; opacity: 0.75; margin-top: 3px; }
 
   /* ── Tabs ── */
-  .tab-bar { display: flex; gap: 0; padding: 18px 18px 0; flex-wrap: wrap; }
-  .tab {
-    padding: 8px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1.5px solid #dfe1e6;
-    background: white;
-    color: #5e6c84;
-    border-radius: 6px 6px 0 0;
-    border-bottom: none;
-    transition: background 0.15s, color 0.15s;
-    white-space: nowrap;
-  }
+  .tab-bar { display: flex; padding: 18px 18px 0; flex-wrap: wrap; gap: 0; }
+  .tab { padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #dfe1e6; background: white; color: #5e6c84; border-radius: 6px 6px 0 0; border-bottom: none; transition: background 0.15s, color 0.15s; white-space: nowrap; }
   .tab.active { background: #1a6b3c; color: white; border-color: #1a6b3c; }
   .tab:not(.active):hover { background: #ebecf0; }
   .panel { display: none; padding: 0 18px 24px; }
   .panel.active { display: block; }
 
   /* ── KPI Cards ── */
-  .cards-wrap {
-    background: white;
-    border: 1.5px solid #dfe1e6;
-    border-top: none;
-    border-radius: 0 6px 6px 6px;
-    padding: 16px;
-  }
+  .cards-wrap { background: white; border: 1.5px solid #dfe1e6; border-top: none; border-radius: 0 6px 6px 6px; padding: 16px; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-  .card {
-    background: #fafbfc;
-    border: 1px solid #e8eaed;
-    border-radius: 8px;
-    padding: 14px 16px 12px;
-    position: relative;
-  }
+  .card { background: #fafbfc; border: 1px solid #e8eaed; border-radius: 8px; padding: 14px 16px 12px; position: relative; }
   .card-label { font-size: 11px; font-weight: 700; color: #5e6c84; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
-  .card-sub   { font-size: 10.5px; color: #97a0af; margin-top: 2px; font-style: italic; }
+  .card-sub { font-size: 10.5px; color: #97a0af; margin-top: 2px; font-style: italic; }
   .card-value { font-size: 30px; font-weight: 700; margin-top: 10px; color: #172b4d; line-height: 1; }
   .card-value.empty { color: #c1c7d0; font-size: 22px; }
   .card-detail { font-size: 10.5px; color: #97a0af; margin-top: 4px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; flex-wrap: wrap; gap: 4px; }
   .target { font-size: 11px; color: #5e6c84; }
   .status-dot { position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; border-radius: 50%; }
-  .status-dot.on-target  { background: #36b37e; }
+  .status-dot.on-target { background: #36b37e; }
   .status-dot.off-target { background: #ff5630; }
-  .status-dot.pending    { background: #c1c7d0; }
-
-  /* ── Deltas ── */
+  .status-dot.pending { background: #c1c7d0; }
   .delta { font-size: 11.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
-  .delta.good    { color: #006644; background: #e3fcef; }
-  .delta.bad     { color: #bf2600; background: #ffebe6; }
+  .delta.good { color: #006644; background: #e3fcef; }
+  .delta.bad { color: #bf2600; background: #ffebe6; }
   .delta.neutral { color: #403294; background: #eae6ff; }
-  .delta.new-tag { color: #0052cc; background: #deebff; }
 
   /* ── Summary bar ── */
   .summary-bar { display: flex; gap: 10px; margin: 14px 0 0; padding: 10px 14px; background: #f4f5f7; border-radius: 6px; font-size: 12px; flex-wrap: wrap; }
   .summary-pill { display: flex; align-items: center; gap: 5px; font-weight: 600; color: #5e6c84; }
   .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot.green { background: #36b37e; }
-  .dot.red   { background: #ff5630; }
+  .dot.red { background: #ff5630; }
 
   /* ── Breakdown ── */
-  .breakdown-toggle {
-    display: flex; align-items: center; gap: 6px;
-    margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0f1f3;
-    font-size: 12px; font-weight: 600; color: #5e6c84; cursor: pointer; user-select: none;
-  }
+  .breakdown-toggle { display: flex; align-items: center; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0f1f3; font-size: 12px; font-weight: 600; color: #5e6c84; cursor: pointer; user-select: none; }
   .breakdown-toggle:hover { color: #1a6b3c; }
   .toggle-arrow { transition: transform 0.2s; font-size: 10px; }
   .toggle-arrow.open { transform: rotate(90deg); }
@@ -178,17 +80,18 @@
   .mini-bar { height: 6px; border-radius: 2px; background: #1a6b3c; }
 
   /* ── Compare table ── */
-  .compare-table { background: white; border: 1.5px solid #dfe1e6; border-top: none; border-radius: 0 6px 6px 6px; overflow: hidden; }
-  .compare-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .compare-table th { background: #f4f5f7; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #5e6c84; border-bottom: 1.5px solid #dfe1e6; }
-  .compare-table th:not(:first-child) { text-align: right; }
-  .compare-table td { padding: 11px 16px; border-bottom: 1px solid #f0f1f3; }
-  .compare-table td:not(:first-child) { text-align: right; font-weight: 600; }
-  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-wrap { background: white; border: 1.5px solid #dfe1e6; border-top: none; border-radius: 0 6px 6px 6px; overflow-x: auto; }
+  .compare-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-wrap th { background: #f4f5f7; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #5e6c84; border-bottom: 1.5px solid #dfe1e6; white-space: nowrap; }
+  .compare-wrap th:not(:first-child) { text-align: right; }
+  .compare-wrap td { padding: 11px 16px; border-bottom: 1px solid #f0f1f3; }
+  .compare-wrap td:not(:first-child) { text-align: right; font-weight: 600; }
+  .compare-wrap tr:last-child td { border-bottom: none; }
   .kpi-name { font-weight: 600; color: #172b4d; }
-  .kpi-sub  { font-size: 11px; color: #97a0af; margin-top: 1px; }
+  .kpi-sub { font-size: 11px; color: #97a0af; margin-top: 1px; }
   .val-good { color: #006644; }
-  .val-bad  { color: #bf2600; }
+  .val-bad { color: #bf2600; }
+  .val-empty { color: #c1c7d0; font-style: italic; font-weight: 400 !important; }
 
   /* ── Projects ── */
   .projects-wrap { background: white; border: 1.5px solid #dfe1e6; border-top: none; border-radius: 0 6px 6px 6px; overflow: hidden; }
@@ -197,11 +100,11 @@
   .project-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 7px; }
   .project-name { font-size: 14px; font-weight: 700; color: #172b4d; line-height: 1.3; }
   .project-status-badge { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
-  .badge-planning    { background: #eae6ff; color: #403294; }
+  .badge-planning { background: #eae6ff; color: #403294; }
   .badge-in-progress { background: #deebff; color: #0052cc; }
-  .badge-in-review   { background: #fffae6; color: #974f0c; }
-  .badge-complete    { background: #e3fcef; color: #006644; }
-  .badge-on-hold     { background: #f4f5f7; color: #5e6c84; }
+  .badge-in-review { background: #fffae6; color: #974f0c; }
+  .badge-complete { background: #e3fcef; color: #006644; }
+  .badge-on-hold { background: #f4f5f7; color: #5e6c84; }
   .project-desc { font-size: 12.5px; color: #5e6c84; line-height: 1.6; margin-bottom: 14px; }
   .project-meta { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; }
   .meta-item { display: flex; flex-direction: column; gap: 2px; }
@@ -214,22 +117,18 @@
   .phase-pct { font-size: 11px; color: #97a0af; }
   .phase-bar-wrap { height: 6px; background: #e8eaed; border-radius: 3px; overflow: hidden; }
   .phase-bar { height: 100%; border-radius: 3px; }
-  .phase-bar.blue   { background: #0052cc; }
+  .phase-bar.blue { background: #0052cc; }
   .phase-bar.yellow { background: #ff991f; }
-  .phase-bar.green  { background: #36b37e; }
-  .phase-bar.grey   { background: #c1c7d0; }
+  .phase-bar.green { background: #36b37e; }
+  .phase-bar.grey { background: #c1c7d0; }
 
-  /* ── Loading / error states ── */
   .loading { text-align: center; padding: 40px; color: #97a0af; font-size: 13px; }
   .error-banner { margin: 16px 18px 0; padding: 12px 16px; background: #ffebe6; border: 1px solid #ff8f73; border-radius: 6px; font-size: 12.5px; color: #bf2600; }
-
-  /* ── Footer ── */
   .footer { font-size: 11px; color: #97a0af; text-align: right; padding: 8px 18px 16px; }
 </style>
 </head>
 <body>
 
-<!-- Password gate -->
 <div id="gate">
   <div class="gate-box">
     <div class="gate-logo">Promo Ops</div>
@@ -246,49 +145,8 @@
 </div>
 
 <script>
-  const CORRECT_PW = 'promoops2026';
-
-  function checkPassword() {
-    const input = document.getElementById('pw-input');
-    const error = document.getElementById('pw-error');
-    if (input.value === CORRECT_PW) {
-      sessionStorage.setItem('promo_auth', '1');
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      loadDashboard();
-    } else {
-      input.classList.add('error');
-      error.textContent = 'Incorrect password. Please try again.';
-      input.value = '';
-      input.focus();
-    }
-  }
-
-  // Allow Enter key to submit
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('pw-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') checkPassword();
-    });
-    // Skip gate if already authenticated this session
-    if (sessionStorage.getItem('promo_auth') === '1') {
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      loadDashboard();
-    }
-  });
-
-  function loadDashboard() {
-// ── Config ────────────────────────────────────────────────────────────────────
-const DATA_URL = 'data.json';
-
-const KPI_META = {
-  promoConfigs:     { label: 'Promo Configs Built',      sub: 'offers & generosity setups' },
-  cycleTime:        { label: 'Cycle Time',                sub: 'avg. brief to live config'  },
-  configAccuracy:   { label: 'Config Accuracy',           sub: 'first-time-right rate'      },
-  slaAdherence:     { label: 'SLA Adherence',             sub: 'on-time config delivery'    },
-  requestsTracked:  { label: 'Requests Tracked in Asana', sub: 'of all intake requests'     },
-  generosityErrors: { label: 'Generosity Errors',         sub: 'post-deployment'            },
-};
+const CORRECT_PW = 'promoops2026';
+const DATA_URL   = 'data.json';
 
 const STATUS_META = {
   'planning':    { label: 'Planning',    cls: 'badge-planning'    },
@@ -299,12 +157,9 @@ const STATUS_META = {
 };
 
 const PHASE_COLOR = {
-  'Discovery':   'blue',
-  'Development': 'blue',
-  'Testing':     'yellow',
-  'Staging':     'yellow',
-  'Live':        'green',
-  'On Hold':     'grey',
+  'Discovery': 'blue', 'Development': 'blue',
+  'Testing': 'yellow', 'Staging': 'yellow',
+  'Live': 'green',     'On Hold': 'grey',
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -320,57 +175,54 @@ function onTarget(v, target, lowerBetter) {
   return (lowerBetter ? v <= target : v >= target) ? 'on-target' : 'off-target';
 }
 
-// ── KPI Renderers ─────────────────────────────────────────────────────────────
-function renderCards(kpi, month) {
-  const d = kpi[month];
-  return Object.keys(KPI_META).map(k => {
-    const item = d[k];
-    const m = KPI_META[k];
-    const valStr = fmt(item.value, item.unit);
-    const status = onTarget(item.value, item.target, item.lowerBetter);
+function tgtLabel(meta) {
+  if (meta.target === null || meta.target === undefined) return '';
+  return meta.lowerBetter
+    ? `target ≤${meta.target}${meta.unit}`
+    : `target ${meta.target}${meta.unit}`;
+}
+
+// ── KPI card renderer (single month) ─────────────────────────────────────────
+function renderCards(kpiMeta, monthData, prevMonthData) {
+  return Object.keys(kpiMeta).map(k => {
+    const meta  = kpiMeta[k];
+    const item  = monthData.kpi[k] || {};
+    const v     = item.value;
+    const valStr = fmt(v, meta.unit);
+    const status = onTarget(v, meta.target, meta.lowerBetter);
 
     let deltaHtml = '';
-    if (k === 'promoConfigs' && month === 'april' && item.prior !== null && item.value !== null) {
-      const diff = item.value - item.prior;
-      const sign = diff >= 0 ? '+' : '';
-      const cls  = diff === 0 ? 'neutral' : (diff > 0 ? 'good' : 'bad');
-      deltaHtml = `<span class="delta ${cls}">${sign}${diff.toLocaleString()} vs Mar</span>`;
-    } else if (month === 'april' && k !== 'promoConfigs') {
-      const mv = kpi.march[k].value;
-      if (mv !== null && mv !== undefined && item.value !== null && item.value !== undefined) {
-        const diff = Math.round((item.value - mv) * 100) / 100;
+    if (prevMonthData) {
+      const pv = (prevMonthData.kpi[k] || {}).value;
+      if (v !== null && v !== undefined && pv !== null && pv !== undefined) {
+        const diff = Math.round((v - pv) * 100) / 100;
         const sign = diff >= 0 ? '+' : '';
-        const good = item.lowerBetter ? diff < 0 : diff > 0;
+        const good = meta.lowerBetter ? diff < 0 : diff > 0;
         const cls  = diff === 0 ? 'neutral' : (good ? 'good' : 'bad');
-        deltaHtml = `<span class="delta ${cls}">${sign}${diff}${item.unit} vs Mar</span>`;
+        const prevLabel = prevMonthData.label.split(' ')[0].slice(0, 3); // e.g. "Apr"
+        deltaHtml = `<span class="delta ${cls}">${sign}${diff}${meta.unit} vs ${prevLabel}</span>`;
       }
-    } else if (k === 'requestsTracked' && month === 'march') {
-      deltaHtml = `<span class="delta new-tag">New</span>`;
     }
 
-    const tgt = (item.target !== undefined && item.target !== null)
-      ? (item.lowerBetter ? `target ≤${item.target}${item.unit}` : `target ${item.target}${item.unit}`) : '';
-    const detail = item.detail ? `<div class="card-detail">${item.detail}</div>` : '';
-
+    const detailLine = item.detail ? `<div class="card-detail">${item.detail}</div>` : '';
     return `<div class="card">
       <div class="status-dot ${status}"></div>
-      <div class="card-label">${m.label}</div>
-      <div class="card-sub">${m.sub}</div>
+      <div class="card-label">${meta.label}</div>
+      <div class="card-sub">${meta.sub}</div>
       <div class="card-value ${valStr === null ? 'empty' : ''}">${valStr !== null ? valStr : '—'}</div>
-      ${detail}
+      ${detailLine}
       <div class="card-footer">
-        <span class="target">${tgt}</span>
+        <span class="target">${tgtLabel(meta)}</span>
         ${deltaHtml}
       </div>
     </div>`;
   }).join('');
 }
 
-function renderSummaryBar(kpi, month) {
-  const d = kpi[month];
-  const keys = Object.keys(KPI_META).filter(k => d[k].target !== undefined && d[k].target !== null);
-  const green = keys.filter(k => onTarget(d[k].value, d[k].target, d[k].lowerBetter) === 'on-target').length;
-  const red   = keys.filter(k => onTarget(d[k].value, d[k].target, d[k].lowerBetter) === 'off-target').length;
+function renderSummaryBar(kpiMeta, monthData) {
+  const keys  = Object.keys(kpiMeta).filter(k => kpiMeta[k].target !== null);
+  const green = keys.filter(k => onTarget(monthData.kpi[k]?.value, kpiMeta[k].target, kpiMeta[k].lowerBetter) === 'on-target').length;
+  const red   = keys.filter(k => onTarget(monthData.kpi[k]?.value, kpiMeta[k].target, kpiMeta[k].lowerBetter) === 'off-target').length;
   return `<div class="summary-bar">
     <span class="summary-pill"><span class="dot green"></span>${green} on target</span>
     <span style="color:#dfe1e6">·</span>
@@ -378,21 +230,26 @@ function renderSummaryBar(kpi, month) {
   </div>`;
 }
 
-function renderBreakdown(operators, month) {
-  const maxVal = Math.max(...operators.map(o => o[month]));
-  const sorted = [...operators].sort((a, b) => b[month] - a[month]);
-  const total  = sorted.reduce((s, o) => s + o[month], 0);
+function renderBreakdown(monthData) {
+  const ops    = monthData.operators || [];
+  const valid  = ops.filter(o => o.value !== null);
+  if (!valid.length) return '';
+  const maxVal = Math.max(...valid.map(o => o.value));
+  const sorted = [...ops].sort((a, b) => (b.value || 0) - (a.value || 0));
+  const total  = valid.reduce((s, o) => s + o.value, 0);
   const rows   = sorted.map(o => {
-    const pct = maxVal > 0 ? Math.round((o[month] / maxVal) * 100) : 0;
+    const pct = (maxVal > 0 && o.value !== null) ? Math.round((o.value / maxVal) * 100) : 0;
+    const display = o.value !== null ? o.value.toLocaleString() : '—';
     return `<tr><td>${o.name}</td><td><div class="bar-cell">
       <div class="mini-bar-wrap"><div class="mini-bar" style="width:${pct}%"></div></div>
-      ${o[month].toLocaleString()}
+      ${display}
     </div></td></tr>`;
   }).join('');
-  return `<div class="breakdown-toggle" onclick="toggleBreakdown('${month}')">
-    <span class="toggle-arrow" id="arrow-${month}">▶</span> Team breakdown
+  const id = monthData.id;
+  return `<div class="breakdown-toggle" onclick="toggleBreakdown('${id}')">
+    <span class="toggle-arrow" id="arrow-${id}">▶</span> Team breakdown
   </div>
-  <div class="breakdown-table" id="breakdown-${month}">
+  <div class="breakdown-table" id="breakdown-${id}">
     <table>
       <thead><tr><th>Operator</th><th>Configs built</th></tr></thead>
       <tbody>${rows}</tbody>
@@ -401,32 +258,32 @@ function renderBreakdown(operators, month) {
   </div>`;
 }
 
-function renderCompare(kpi) {
-  const rows = Object.keys(KPI_META).map(k => {
-    const m   = KPI_META[k];
-    const mar = kpi.march[k];
-    const apr = kpi.april[k];
-    const marStr = fmt(mar.value, mar.unit);
-    const aprStr = fmt(apr.value, apr.unit);
-    const marCls = onTarget(mar.value, mar.target, mar.lowerBetter) === 'on-target' ? 'val-good' : onTarget(mar.value, mar.target, mar.lowerBetter) === 'off-target' ? 'val-bad' : '';
-    const aprCls = onTarget(apr.value, apr.target, apr.lowerBetter) === 'on-target' ? 'val-good' : onTarget(apr.value, apr.target, apr.lowerBetter) === 'off-target' ? 'val-bad' : '';
-    const tgt = (mar.target !== undefined && mar.target !== null)
-      ? (mar.lowerBetter ? `target ≤${mar.target}${mar.unit}` : `target ${mar.target}${mar.unit}`) : '';
+// ── Compare tab (all months) ──────────────────────────────────────────────────
+function renderCompare(kpiMeta, months) {
+  const headers = months.map(m => `<th>${m.label}</th>`).join('');
+  const rows = Object.keys(kpiMeta).map(k => {
+    const meta = kpiMeta[k];
+    const cells = months.map(m => {
+      const v      = (m.kpi[k] || {}).value;
+      const valStr = fmt(v, meta.unit);
+      const status = onTarget(v, meta.target, meta.lowerBetter);
+      const cls    = valStr === null ? 'val-empty' : (status === 'on-target' ? 'val-good' : status === 'off-target' ? 'val-bad' : '');
+      return `<td class="${cls}">${valStr !== null ? valStr : '—'}</td>`;
+    }).join('');
     return `<tr>
-      <td><div class="kpi-name">${m.label}</div><div class="kpi-sub">${tgt}</div></td>
-      <td class="${marCls}">${marStr !== null ? marStr : '—'}</td>
-      <td class="${aprCls}">${aprStr !== null ? aprStr : '—'}</td>
+      <td><div class="kpi-name">${meta.label}</div><div class="kpi-sub">${tgtLabel(meta)}</div></td>
+      ${cells}
     </tr>`;
   }).join('');
-  return `<div class="compare-table"><table>
-    <thead><tr><th>KPI</th><th>March 2026</th><th>April 2026</th></tr></thead>
+  return `<div class="compare-wrap"><table>
+    <thead><tr><th>KPI</th>${headers}</tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
 }
 
-// ── Project Renderer ──────────────────────────────────────────────────────────
+// ── Projects tab ──────────────────────────────────────────────────────────────
 function renderProjects(projects) {
-  return projects.map(p => {
+  return `<div class="projects-wrap">` + projects.map(p => {
     const sm  = STATUS_META[p.status] || STATUS_META['planning'];
     const col = PHASE_COLOR[p.phase]  || 'blue';
     return `<div class="project-card">
@@ -436,93 +293,55 @@ function renderProjects(projects) {
       </div>
       <div class="project-desc">${p.desc}</div>
       <div class="project-meta">
-        <div class="meta-item">
-          <div class="meta-label">Start</div>
-          <div class="meta-value ${p.startDate ? '' : 'tbd'}">${p.startDate || 'TBD'}</div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-label">Target</div>
-          <div class="meta-value ${p.targetDate ? '' : 'tbd'}">${p.targetDate || 'TBD'}</div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-label">Owner</div>
-          <div class="meta-value ${p.owner ? '' : 'tbd'}">${p.owner || 'TBD'}</div>
-        </div>
+        <div class="meta-item"><div class="meta-label">Start</div><div class="meta-value ${p.startDate ? '' : 'tbd'}">${p.startDate || 'TBD'}</div></div>
+        <div class="meta-item"><div class="meta-label">Target</div><div class="meta-value ${p.targetDate ? '' : 'tbd'}">${p.targetDate || 'TBD'}</div></div>
+        <div class="meta-item"><div class="meta-label">Owner</div><div class="meta-value ${p.owner ? '' : 'tbd'}">${p.owner || 'TBD'}</div></div>
         <div class="phase-track">
-          <div class="phase-label-row">
-            <span class="phase-current">${p.phase}</span>
-            <span class="phase-pct">${p.pct}%</span>
-          </div>
-          <div class="phase-bar-wrap">
-            <div class="phase-bar ${col}" style="width:${p.pct}%"></div>
-          </div>
+          <div class="phase-label-row"><span class="phase-current">${p.phase}</span><span class="phase-pct">${p.pct}%</span></div>
+          <div class="phase-bar-wrap"><div class="phase-bar ${col}" style="width:${p.pct}%"></div></div>
         </div>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + `</div>`;
 }
 
-// ── Main render ───────────────────────────────────────────────────────────────
+// ── Build full app ────────────────────────────────────────────────────────────
 function buildApp(data) {
+  const { kpiMeta, months, projects, lastUpdated } = data;
+
+  // Build tabs — one per month + Compare + Projects
+  const tabsHtml = [
+    ...months.map((m, i) => `<div class="tab${i === 0 ? ' active' : ''}" id="tab-${m.id}" onclick="showTab('${m.id}')">${m.label}</div>`),
+    `<div class="tab" id="tab-compare"  onclick="showTab('compare')">Compare</div>`,
+    `<div class="tab" id="tab-projects" onclick="showTab('projects')">Projects</div>`,
+  ].join('');
+
+  // Build month panels
+  const monthPanels = months.map((m, i) => {
+    const prev = i > 0 ? months[i - 1] : null;
+    return `<div class="panel${i === 0 ? ' active' : ''}" id="panel-${m.id}">
+      <div class="cards-wrap">
+        <div class="cards">${renderCards(kpiMeta, m, prev)}</div>
+        ${renderSummaryBar(kpiMeta, m)}
+        ${renderBreakdown(m)}
+      </div>
+    </div>`;
+  }).join('');
+
   document.getElementById('app').innerHTML = `
     <div class="header">
       <h1>Promo Operations</h1>
-      <p>Backend promotion &amp; generosity config · Mar–Apr 2026</p>
+      <p>Backend promotion &amp; generosity config</p>
     </div>
-
-    <div class="tab-bar">
-      <div class="tab active" id="tab-march"    onclick="showTab('march')">March 2026</div>
-      <div class="tab"        id="tab-april"    onclick="showTab('april')">April 2026</div>
-      <div class="tab"        id="tab-compare"  onclick="showTab('compare')">Compare</div>
-      <div class="tab"        id="tab-projects" onclick="showTab('projects')">Projects</div>
-    </div>
-
-    <div class="panel active" id="panel-march">
-      <div class="cards-wrap">
-        <div class="cards">${renderCards(data.kpi, 'march')}</div>
-        ${renderSummaryBar(data.kpi, 'march')}
-        ${renderBreakdown(data.operators, 'march')}
-      </div>
-    </div>
-
-    <div class="panel" id="panel-april">
-      <div class="cards-wrap">
-        <div class="cards">${renderCards(data.kpi, 'april')}</div>
-        ${renderSummaryBar(data.kpi, 'april')}
-        ${renderBreakdown(data.operators, 'april')}
-      </div>
-    </div>
-
-    <div class="panel" id="panel-compare">
-      ${renderCompare(data.kpi)}
-    </div>
-
-    <div class="panel" id="panel-projects">
-      <div class="projects-wrap">${renderProjects(data.projects)}</div>
-    </div>
-
-    <div class="footer">Last updated: ${data.lastUpdated}</div>
+    <div class="tab-bar">${tabsHtml}</div>
+    ${monthPanels}
+    <div class="panel" id="panel-compare">${renderCompare(kpiMeta, months)}</div>
+    <div class="panel" id="panel-projects">${renderProjects(projects)}</div>
+    <div class="footer">Last updated: ${lastUpdated}</div>
   `;
 }
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
-    fetch(DATA_URL + '?v=' + Date.now())
-      .then(r => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(data => buildApp(data))
-      .catch(err => {
-        document.getElementById('app').innerHTML = `
-          <div class="header"><h1>Promo Operations</h1></div>
-          <div class="error-banner">
-            ⚠️ Could not load dashboard data (<code>${err.message}</code>).
-            Make sure <code>data.json</code> is in the same folder as this file.
-          </div>`;
-      });
-  } // end loadDashboard
-
-// ── Global UI handlers (must be outside loadDashboard to work in onclick attrs)
+// ── Global UI handlers ────────────────────────────────────────────────────────
 function showTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -530,12 +349,50 @@ function showTab(tab) {
   document.getElementById('panel-' + tab).classList.add('active');
 }
 
-function toggleBreakdown(month) {
-  const tbl   = document.getElementById('breakdown-' + month);
-  const arrow = document.getElementById('arrow-' + month);
-  const open  = tbl.classList.toggle('open');
+function toggleBreakdown(id) {
+  const tbl   = document.getElementById('breakdown-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!tbl) return;
+  const open = tbl.classList.toggle('open');
   arrow.classList.toggle('open', open);
 }
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+function checkPassword() {
+  const input = document.getElementById('pw-input');
+  const error = document.getElementById('pw-error');
+  if (input.value === CORRECT_PW) {
+    sessionStorage.setItem('promo_auth', '1');
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    loadDashboard();
+  } else {
+    input.classList.add('error');
+    error.textContent = 'Incorrect password. Please try again.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+function loadDashboard() {
+  fetch(DATA_URL + '?v=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => buildApp(data))
+    .catch(err => {
+      document.getElementById('app').innerHTML = `
+        <div class="header"><h1>Promo Operations</h1></div>
+        <div class="error-banner">⚠️ Could not load <code>data.json</code> (${err.message}). Make sure it is in the same folder as this file.</div>`;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+  if (sessionStorage.getItem('promo_auth') === '1') {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    loadDashboard();
+  }
+});
 </script>
 </body>
 </html>
