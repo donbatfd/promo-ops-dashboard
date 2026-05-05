@@ -16,22 +16,30 @@
       "slaAdherence":     { "value": 91.78, "target": 90,   "unit": "%", "lowerBetter": false, "detail": "6 misses / 73 tasks" },
       "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
       "generosityErrors": { "value": 7,     "target": 0,    "unit": "",  "lowerBetter": true  }
+    },
+    "may": {
+      "promoConfigs":     { "value": "TBD",  "prior": 1523,  "unit": "",  "lowerBetter": false },
+      "cycleTime":        { "value": "TBD",  "target": 3,    "unit": "d", "lowerBetter": true  },
+      "configAccuracy":   { "value": "TBD",  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "X / X first-time-right" },
+      "slaAdherence":     { "value": "TBD", "target": 90,   "unit": "%", "lowerBetter": false, "detail": "X misses / X tasks" },
+      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
+      "generosityErrors": { "value": 1,     "target": 0,    "unit": "",  "lowerBetter": true  }
     }
   },
   "operators": [
-    { "name": "Don",     "march": 2,   "april": 1   },
-    { "name": "Aunye",   "march": 235, "april": 340 },
-    { "name": "Billy",   "march": 2,   "april": 1   },
-    { "name": "Michael", "march": 76,  "april": 50  },
-    { "name": "Spencer", "march": 0,   "april": 8   },
-    { "name": "Jordan",  "march": 390, "april": 477 },
-    { "name": "Jenna",   "march": 63,  "april": 75  },
-    { "name": "Eddie",   "march": 12,  "april": 10  },
-    { "name": "Jonah",   "march": 201, "april": 130 },
-    { "name": "Stephen", "march": 482, "april": 306 },
-    { "name": "Elena",   "march": 0,   "april": 48  },
-    { "name": "Camille", "march": 0,   "april": 34  },
-    { "name": "Nikki",   "march": 166, "april": 43  }
+    { "name": "Don",     "march": 2,   "april": 1,   "may":"X"},
+    { "name": "Aunye",   "march": 235, "april": 340,   "may":"X"},
+    { "name": "Billy",   "march": 2,   "april": 1,   "may":"X"},
+    { "name": "Michael", "march": 76,  "april": 50,   "may":"X"},
+    { "name": "Spencer", "march": 0,   "april": 8,   "may":"X"},
+    { "name": "Jordan",  "march": 390, "april": 477,   "may":"X"},
+    { "name": "Jenna",   "march": 63,  "april": 75,   "may":"X"},
+    { "name": "Eddie",   "march": 12,  "april": 10,   "may":"X"},
+    { "name": "Jonah",   "march": 201, "april": 130,   "may":"X"},
+    { "name": "Stephen", "march": 482, "april": 306,   "may":"X"},
+    { "name": "Elena",   "march": 0,   "april": 48,   "may":"X"},
+    { "name": "Camille", "march": 0,   "april": 34,   "may":"X"},
+    { "name": "Nikki",   "march": 166, "april": 43,   "may":"X"}
   ],
   "projects": [
     {
