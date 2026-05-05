@@ -1,0 +1,78 @@
+{
+  "lastUpdated": "April 29, 2026",
+  "kpi": {
+    "march": {
+      "promoConfigs":     { "value": 1629,  "prior": null,  "unit": "",  "lowerBetter": false },
+      "cycleTime":        { "value": 2.25,  "target": 3,    "unit": "d", "lowerBetter": true  },
+      "configAccuracy":   { "value": 98.3,  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "1,602 / 1,629 first-time-right" },
+      "slaAdherence":     { "value": 92.45, "target": 90,   "unit": "%", "lowerBetter": false, "detail": "4 misses / 53 tasks" },
+      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
+      "generosityErrors": { "value": 6,     "target": 0,    "unit": "",  "lowerBetter": true  }
+    },
+    "april": {
+      "promoConfigs":     { "value": 1523,  "prior": 1629,  "unit": "",  "lowerBetter": false },
+      "cycleTime":        { "value": 2.63,  "target": 3,    "unit": "d", "lowerBetter": true  },
+      "configAccuracy":   { "value": 98.1,  "target": 99,   "unit": "%", "lowerBetter": false, "detail": "1,494 / 1,523 first-time-right" },
+      "slaAdherence":     { "value": 91.78, "target": 90,   "unit": "%", "lowerBetter": false, "detail": "6 misses / 73 tasks" },
+      "requestsTracked":  { "value": 100,   "target": 100,  "unit": "%", "lowerBetter": false },
+      "generosityErrors": { "value": 7,     "target": 0,    "unit": "",  "lowerBetter": true  }
+    }
+  },
+  "operators": [
+    { "name": "Don",     "march": 2,   "april": 1   },
+    { "name": "Aunye",   "march": 235, "april": 340 },
+    { "name": "Billy",   "march": 2,   "april": 1   },
+    { "name": "Michael", "march": 76,  "april": 50  },
+    { "name": "Spencer", "march": 0,   "april": 8   },
+    { "name": "Jordan",  "march": 390, "april": 477 },
+    { "name": "Jenna",   "march": 63,  "april": 75  },
+    { "name": "Eddie",   "march": 12,  "april": 10  },
+    { "name": "Jonah",   "march": 201, "april": 130 },
+    { "name": "Stephen", "march": 482, "april": 306 },
+    { "name": "Elena",   "march": 0,   "april": 48  },
+    { "name": "Camille", "march": 0,   "april": 34  },
+    { "name": "Nikki",   "march": 166, "april": 43  }
+  ],
+  "projects": [
+    {
+      "name": "AI Contextual QA Tool",
+      "status": "planning",
+      "phase": "Discovery",
+      "pct": 5,
+      "startDate": null,
+      "targetDate": null,
+      "owner": null,
+      "desc": "Ingests original request information from Asana alongside the configurations of built promotions, compares the two for accuracy, and outputs a report summarising correct elements while alerting on those that are incorrect or require human review."
+    },
+    {
+      "name": "AI Seeded Promo Creation Tool",
+      "status": "planning",
+      "phase": "Discovery",
+      "pct": 5,
+      "startDate": null,
+      "targetDate": null,
+      "owner": null,
+      "desc": "Ingests a \"seed version\" of a promotion and generates an output CSV containing all other required versions, enabling bulk creation of promotion variants from a single source record."
+    },
+    {
+      "name": "AI Workload Tool",
+      "status": "planning",
+      "phase": "Discovery",
+      "pct": 5,
+      "startDate": null,
+      "targetDate": null,
+      "owner": null,
+      "desc": "Identifies request volume in the backlog alongside team member availability, producing forecasts and task assignments that ensure all required work is completed within SLA."
+    },
+    {
+      "name": "AI Daily Standup Tool",
+      "status": "planning",
+      "phase": "Discovery",
+      "pct": 5,
+      "startDate": null,
+      "targetDate": null,
+      "owner": null,
+      "desc": "An agent that reviews incomplete Asana requests and outputs a daily summary of open items and required follow-ups, surfacing blockers so tasks are ready to build."
+    }
+  ]
+}
