@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promo Operations Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -145,22 +146,85 @@
 </div>
 
 <script>
+// ── ✏️  ONLY LINE YOU EVER NEED TO EDIT ──────────────────────────────────────
+const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+// ─────────────────────────────────────────────────────────────────────────────
+
 const CORRECT_PW = 'promoops2026';
-const DATA_URL   = 'data.json';
+
+const KPI_META = {
+  promoConfigs:     { label: 'Promo Configs Built',        sub: 'offers & generosity setups', unit: '',  lowerBetter: false, target: null },
+  cycleTime:        { label: 'Cycle Time',                  sub: 'avg. brief to live config',  unit: 'd', lowerBetter: true,  target: 3    },
+  configAccuracy:   { label: 'Config Accuracy',             sub: 'first-time-right rate',      unit: '%', lowerBetter: false, target: 99   },
+  slaAdherence:     { label: 'SLA Adherence',               sub: 'on-time config delivery',    unit: '%', lowerBetter: false, target: 90   },
+  requestsTracked:  { label: 'Requests Tracked in Asana',   sub: 'of all intake requests',     unit: '%', lowerBetter: false, target: 100  },
+  generosityErrors: { label: 'Generosity Errors',           sub: 'post-deployment',            unit: '',  lowerBetter: true,  target: 0    },
+};
 
 const STATUS_META = {
   'planning':    { label: 'Planning',    cls: 'badge-planning'    },
   'in-progress': { label: 'In Progress', cls: 'badge-in-progress' },
   'in-review':   { label: 'In Review',   cls: 'badge-in-review'   },
-  'complete':    { label: 'Complete',    cls: 'badge-complete'     },
-  'on-hold':     { label: 'On Hold',     cls: 'badge-on-hold'      },
+  'complete':    { label: 'Complete',    cls: 'badge-complete'    },
+  'on-hold':     { label: 'On Hold',     cls: 'badge-on-hold'     },
 };
-
 const PHASE_COLOR = {
   'Discovery': 'blue', 'Development': 'blue',
   'Testing': 'yellow', 'Staging': 'yellow',
   'Live': 'green',     'On Hold': 'grey',
 };
+
+// ── CSV fetch helper ──────────────────────────────────────────────────────────
+function sheetUrl(sheetName) {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+}
+
+function fetchCsv(sheetName) {
+  return fetch(sheetUrl(sheetName))
+    .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status} loading "${sheetName}"`); return r.text(); })
+    .then(text => Papa.parse(text, { header: true, skipEmptyLines: true }).data);
+}
+
+function n(v) {
+  if (v === '' || v === null || v === undefined) return null;
+  const num = Number(v);
+  return isNaN(num) ? null : num;
+}
+
+// ── Parse CSVs into dashboard data structure ──────────────────────────────────
+function buildData(kpiRows, opRows, projRows) {
+  // Build months array from KPI sheet rows
+  const lastUpdated = (kpiRows[0] || {}).lastUpdated || '';
+
+  const months = kpiRows.map(r => ({
+    id:    r.id,
+    label: r.label,
+    kpi: {
+      promoConfigs:     { value: n(r.promoConfigs),     detail: null },
+      cycleTime:        { value: n(r.cycleTime),         detail: null },
+      configAccuracy:   { value: n(r.configAccuracy),   detail: r.configAccuracy_detail   || null },
+      slaAdherence:     { value: n(r.slaAdherence),     detail: r.slaAdherence_detail     || null },
+      requestsTracked:  { value: n(r.requestsTracked),  detail: null },
+      generosityErrors: { value: n(r.generosityErrors), detail: null },
+    },
+    operators: opRows
+      .filter(o => o.monthId === r.id)
+      .map(o => ({ name: o.name, value: n(o.value) })),
+  }));
+
+  const projects = projRows.map(p => ({
+    name:       p.name,
+    status:     p.status     || 'planning',
+    phase:      p.phase      || 'Discovery',
+    pct:        n(p.pct)     ?? 0,
+    startDate:  p.startDate  || null,
+    targetDate: p.targetDate || null,
+    owner:      p.owner      || null,
+    desc:       p.desc       || '',
+  }));
+
+  return { lastUpdated, kpiMeta: KPI_META, months, projects };
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt(v, unit) {
@@ -169,28 +233,23 @@ function fmt(v, unit) {
   if (unit === 'd') return v + 'd';
   return Number(v).toLocaleString();
 }
-
 function onTarget(v, target, lowerBetter) {
   if (v === null || v === undefined || target === null || target === undefined) return 'pending';
   return (lowerBetter ? v <= target : v >= target) ? 'on-target' : 'off-target';
 }
-
 function tgtLabel(meta) {
   if (meta.target === null || meta.target === undefined) return '';
-  return meta.lowerBetter
-    ? `target ≤${meta.target}${meta.unit}`
-    : `target ${meta.target}${meta.unit}`;
+  return meta.lowerBetter ? `target ≤${meta.target}${meta.unit}` : `target ${meta.target}${meta.unit}`;
 }
 
-// ── KPI card renderer (single month) ─────────────────────────────────────────
+// ── KPI card renderer ─────────────────────────────────────────────────────────
 function renderCards(kpiMeta, monthData, prevMonthData) {
   return Object.keys(kpiMeta).map(k => {
-    const meta  = kpiMeta[k];
-    const item  = monthData.kpi[k] || {};
-    const v     = item.value;
+    const meta   = kpiMeta[k];
+    const item   = monthData.kpi[k] || {};
+    const v      = item.value;
     const valStr = fmt(v, meta.unit);
     const status = onTarget(v, meta.target, meta.lowerBetter);
-
     let deltaHtml = '';
     if (prevMonthData) {
       const pv = (prevMonthData.kpi[k] || {}).value;
@@ -199,11 +258,10 @@ function renderCards(kpiMeta, monthData, prevMonthData) {
         const sign = diff >= 0 ? '+' : '';
         const good = meta.lowerBetter ? diff < 0 : diff > 0;
         const cls  = diff === 0 ? 'neutral' : (good ? 'good' : 'bad');
-        const prevLabel = prevMonthData.label.split(' ')[0].slice(0, 3); // e.g. "Apr"
+        const prevLabel = prevMonthData.label.split(' ')[0].slice(0, 3);
         deltaHtml = `<span class="delta ${cls}">${sign}${diff}${meta.unit} vs ${prevLabel}</span>`;
       }
     }
-
     const detailLine = item.detail ? `<div class="card-detail">${item.detail}</div>` : '';
     return `<div class="card">
       <div class="status-dot ${status}"></div>
@@ -231,14 +289,14 @@ function renderSummaryBar(kpiMeta, monthData) {
 }
 
 function renderBreakdown(monthData) {
-  const ops    = monthData.operators || [];
-  const valid  = ops.filter(o => o.value !== null);
+  const ops   = monthData.operators || [];
+  const valid = ops.filter(o => o.value !== null);
   if (!valid.length) return '';
   const maxVal = Math.max(...valid.map(o => o.value));
   const sorted = [...ops].sort((a, b) => (b.value || 0) - (a.value || 0));
   const total  = valid.reduce((s, o) => s + o.value, 0);
   const rows   = sorted.map(o => {
-    const pct = (maxVal > 0 && o.value !== null) ? Math.round((o.value / maxVal) * 100) : 0;
+    const pct     = (maxVal > 0 && o.value !== null) ? Math.round((o.value / maxVal) * 100) : 0;
     const display = o.value !== null ? o.value.toLocaleString() : '—';
     return `<tr><td>${o.name}</td><td><div class="bar-cell">
       <div class="mini-bar-wrap"><div class="mini-bar" style="width:${pct}%"></div></div>
@@ -258,11 +316,10 @@ function renderBreakdown(monthData) {
   </div>`;
 }
 
-// ── Compare tab (all months) ──────────────────────────────────────────────────
 function renderCompare(kpiMeta, months) {
   const headers = months.map(m => `<th>${m.label}</th>`).join('');
   const rows = Object.keys(kpiMeta).map(k => {
-    const meta = kpiMeta[k];
+    const meta  = kpiMeta[k];
     const cells = months.map(m => {
       const v      = (m.kpi[k] || {}).value;
       const valStr = fmt(v, meta.unit);
@@ -281,7 +338,6 @@ function renderCompare(kpiMeta, months) {
   </table></div>`;
 }
 
-// ── Projects tab ──────────────────────────────────────────────────────────────
 function renderProjects(projects) {
   return `<div class="projects-wrap">` + projects.map(p => {
     const sm  = STATUS_META[p.status] || STATUS_META['planning'];
@@ -309,14 +365,12 @@ function renderProjects(projects) {
 function buildApp(data) {
   const { kpiMeta, months, projects, lastUpdated } = data;
 
-  // Build tabs — one per month + Compare + Projects
   const tabsHtml = [
     ...months.map((m, i) => `<div class="tab${i === 0 ? ' active' : ''}" id="tab-${m.id}" onclick="showTab('${m.id}')">${m.label}</div>`),
     `<div class="tab" id="tab-compare"  onclick="showTab('compare')">Compare</div>`,
     `<div class="tab" id="tab-projects" onclick="showTab('projects')">Projects</div>`,
   ].join('');
 
-  // Build month panels
   const monthPanels = months.map((m, i) => {
     const prev = i > 0 ? months[i - 1] : null;
     return `<div class="panel${i === 0 ? ' active' : ''}" id="panel-${m.id}">
@@ -348,7 +402,6 @@ function showTab(tab) {
   document.getElementById('tab-'   + tab).classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
 }
-
 function toggleBreakdown(id) {
   const tbl   = document.getElementById('breakdown-' + id);
   const arrow = document.getElementById('arrow-' + id);
@@ -375,14 +428,25 @@ function checkPassword() {
 }
 
 function loadDashboard() {
-  fetch(DATA_URL + '?v=' + Date.now())
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(data => buildApp(data))
-    .catch(err => {
-      document.getElementById('app').innerHTML = `
-        <div class="header"><h1>Promo Operations</h1></div>
-        <div class="error-banner">⚠️ Could not load <code>data.json</code> (${err.message}). Make sure it is in the same folder as this file.</div>`;
-    });
+  if (SHEET_ID === '1gcK757K2VwdhZiVkeTePGbOc1nsDqGkHqcnqtW6V-dI') {
+    document.getElementById('app').innerHTML = `
+      <div class="header"><h1>Promo Operations</h1></div>
+      <div class="error-banner">⚙️ Setup needed: open <code>index.html</code> and replace <code>1gcK757K2VwdhZiVkeTePGbOc1nsDqGkHqcnqtW6V-dI</code> with your actual Google Sheet ID. See the setup guide for instructions.</div>`;
+    return;
+  }
+
+  Promise.all([
+    fetchCsv('KPIs'),
+    fetchCsv('Operators'),
+    fetchCsv('Projects'),
+  ])
+  .then(([kpiRows, opRows, projRows]) => buildApp(buildData(kpiRows, opRows, projRows)))
+  .catch(err => {
+    document.getElementById('app').innerHTML = `
+      <div class="header"><h1>Promo Operations</h1></div>
+      <div class="error-banner">⚠️ Could not load data from Google Sheets (${err.message}).<br><br>
+      Make sure your sheet is shared as <strong>"Anyone with the link can view"</strong> and the Sheet ID in index.html is correct.</div>`;
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
